@@ -14,6 +14,7 @@ INIT_SCHEMA = InitBookSchema()
 RESOURCES_PATH = Path(__file__).parent
 MOCK_DB_PATH = RESOURCES_PATH / 'mock_db.json'
 
+
 @dataclass
 class Book:
     id: int
@@ -60,7 +61,6 @@ def delete_book(book_id):
 
 def check_if_book_with_given_id_exists_in_list(book_id):
     book_list = load_book_list_from_db()
-    print(book_list)
     return len([book for book in book_list if book.id == book_id]) > 0
 
 
@@ -70,11 +70,7 @@ MOCK_BOOK_LIST = [{'id': 1, 'title': 'A Byte Of Python', 'author': 'Swaroop C. H
                   {'id': 3, 'title': 'Карьера Программиста', 'author': 'Г. Лакман Макдауэлл'}]
 
 
-def init_mock_db():
-    print('Init mock book db')
-    save_book_list_to_db([])
-    save_book_list_to_db(MOCK_BOOK_LIST)
-
-
-if __name__ == "__main__":
-    init_mock_db()
+def init_mock_db_if_not_yet():
+    if not MOCK_DB_PATH.exists():
+        save_book_list_to_db([])
+        save_book_list_to_db(MOCK_BOOK_LIST)
