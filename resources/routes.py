@@ -1,12 +1,9 @@
-from flask_restful import Resource, reqparse, abort
+from flask_restful import Resource, abort
 from resources import models
 from resources.schemas import BookSchema
 from dataclasses import asdict
 from flask import request
 from marshmallow import ValidationError
-
-parser = reqparse.RequestParser()
-parser.add_argument('format', type=str, location='args')
 
 
 def abort_if_specific_book_doesnt_exist(book_id):

@@ -72,5 +72,8 @@ MOCK_BOOK_LIST = [{'id': 1, 'title': 'A Byte Of Python', 'author': 'Swaroop C. H
 
 def init_mock_db_if_not_yet():
     if not MOCK_DB_PATH.exists():
-        save_book_list_to_db([])
-        save_book_list_to_db(MOCK_BOOK_LIST)
+        force_recreate_mock_db()
+
+def force_recreate_mock_db():
+    save_book_list_to_db([])
+    save_book_list_to_db(MOCK_BOOK_LIST)
