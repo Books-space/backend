@@ -68,4 +68,6 @@ class SpecificBook(Resource):
         """
         This is endpoint for Book creation
         """
+        # TODO: Пока не понятно как быть с id книги здесь
+        #  наверное нужен patch
         return add_book()
