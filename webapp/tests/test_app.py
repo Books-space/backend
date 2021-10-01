@@ -1,6 +1,6 @@
 from flask_testing import TestCase
 from app import app
-from resources.models import force_recreate_mock_db
+from webapp.resources.models import force_recreate_mock_db
 
 BOOK_LIST_RESOURCE_URL = '/api/v1/book/'
 

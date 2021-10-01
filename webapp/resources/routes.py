@@ -1,6 +1,6 @@
 from flask_restful import Resource, abort
-from resources import models
-from resources.schemas import BookSchema
+from webapp.resources import models
+from webapp.resources.schemas import BookSchema
 from dataclasses import asdict
 from flask import request
 from marshmallow import ValidationError

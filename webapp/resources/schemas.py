@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, ValidationError
 from marshmallow import validates, post_load
-from resources.models import load_book_list_from_db, Book
+from webapp.resources.models import load_book_list_from_db, Book
 
 
 class BookSchema(Schema):
