@@ -1,8 +1,10 @@
 from pathlib import Path
 from dataclasses import dataclass
+from flask_sqlalchemy import SQLAlchemy
 import json
 from marshmallow import Schema, fields
 
+db = SQLAlchemy()
 
 class InitBookSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -15,11 +17,22 @@ RESOURCES_PATH = Path(__file__).parent
 MOCK_DB_PATH = RESOURCES_PATH / 'mock_db.json'
 
 
+#  TODO: Спросить у Владимира, правильно ли это называть модели во множественном числе,
+#   знаю точно, что в Django, например, точно принято их называть в единственном:
+class Books(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    author = db.Column(db.String(100), nullable=False)
+
+
 @dataclass
 class Book:
     id: int
     title: str
     author: str
+
+    def __repr__(self):
+        return '<Book id:{}| "{}" after {}>'.format(self.id, self.title, self.author)
 
 
 def load_book_list_from_db():
