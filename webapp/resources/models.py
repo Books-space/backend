@@ -57,15 +57,15 @@ def add_book(given_book: Book):
     :return: book
     """
     # TODO: Можно ли распаковывать объект в объект (как это происходит со словарём, например, через **?
-    new_book = Books(id=given_book.id, title=given_book.title, author=given_book.title)
+    new_book = Books(id=given_book.id, title=given_book.title, author=given_book.author)
     db.session.add(new_book)
     db.session.commit()
 
     return given_book
 
 
-def edit_book_by_id(edited_book: Book, book_id):
-    book = Books.query.filter_by(id=book_id).first()
+def replace_book(edited_book: Book):
+    book = Books.query.filter_by(id=edited_book.id).first()
     book.title = edited_book.title
     book.author = edited_book.author
     db.session.commit()
@@ -79,5 +79,9 @@ def delete_book(book_id):
     db.session.commit()
 
 
-def check_if_book_with_given_id_exists_in_list(book_id):
+def check_if_book_with_given_id_exists(book_id):
     return Books.query.filter(Books.id == book_id).count() > 0
+
+
+def check_if_book_with_given_title_and_author_exists(book_title, book_author):
+    return Books.query.filter(Books.title == book_title).count() > 0

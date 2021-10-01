@@ -7,11 +7,11 @@ from marshmallow import ValidationError
 
 
 def abort_if_specific_book_doesnt_exist(book_id):
-    if not models.check_if_book_with_given_id_exists_in_list(book_id):
+    if not models.check_if_book_with_given_id_exists(book_id):
         abort(404, message="Book with id {} doesn't exist.".format(book_id))
 
 
-def add_book(book_id=None):
+def process_book(model_function):
     data = request.json
     schema = BookSchema()
 
@@ -20,11 +20,7 @@ def add_book(book_id=None):
     except ValidationError as exc:
         return exc.messages, 400
 
-    if book_id is None:
-        book = models.add_book(book)
-    else:
-        # TODO: id передаётся и через URL, и через тело запроса, нужно оптимизировать
-        book = models.edit_book_by_id(book, book_id)
+    book = model_function(book)
     return asdict(book), 201
 
 
@@ -41,7 +37,7 @@ class BookList(Resource):
         """
         This is endpoint for book creation
         """
-        return add_book()
+        return process_book(models.add_book)
 
 
 class SpecificBook(Resource):
@@ -65,8 +61,7 @@ class SpecificBook(Resource):
 
     def put(self, book_id):
         """
-        This is endpoint for Book creation
+        This is endpoint for Book replacement
         """
-        # TODO: Пока не понятно как быть с id (дублируется в теле запроса и пути) книги здесь
-        #  наверное нужен patch
-        return add_book(book_id)
+        abort_if_specific_book_doesnt_exist(book_id)
+        return process_book(models.replace_book)
