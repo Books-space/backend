@@ -11,18 +11,20 @@ def abort_if_specific_book_doesnt_exist(book_id):
         abort(404, message="Book with id {} doesn't exist.".format(book_id))
 
 
-def add_book():
+def add_book(book_id=None):
     data = request.json
     schema = BookSchema()
 
     try:
         book = schema.load(data)
-        print()
-        print(type(book))
     except ValidationError as exc:
         return exc.messages, 400
 
-    book = models.add_book(book)
+    if book_id is None:
+        book = models.add_book(book)
+    else:
+        # TODO: id передаётся и через URL, и через тело запроса, нужно оптимизировать
+        book = models.edit_book_by_id(book, book_id)
     return asdict(book), 201
 
 
@@ -49,7 +51,7 @@ class SpecificBook(Resource):
         """
         book_id = int(book_id)
         abort_if_specific_book_doesnt_exist(book_id)
-        response = asdict([book for book in models.load_book_list_from_db() if book.id == book_id][0])
+        response = asdict(models.load_book_from_db_by_id(book_id))
         return response
 
     def delete(self, book_id):
@@ -65,6 +67,6 @@ class SpecificBook(Resource):
         """
         This is endpoint for Book creation
         """
-        # TODO: Пока не понятно как быть с id книги здесь
+        # TODO: Пока не понятно как быть с id (дублируется в теле запроса и пути) книги здесь
         #  наверное нужен patch
-        return add_book()
+        return add_book(book_id)
