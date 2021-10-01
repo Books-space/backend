@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 
-./webapp/config.py
+/webapp/config.py
 
-.idea/
+/.idea
