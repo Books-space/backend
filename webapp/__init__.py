@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_restful import Api
 
@@ -7,8 +8,7 @@ from webapp.resources.models import db, Books
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_pyfile('config.py')
-
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URL']
     db.init_app(app)
 
     api = Api(app)
