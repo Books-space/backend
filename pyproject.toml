@@ -7,7 +7,6 @@ authors = ["Alexander Lyotov <sippie84@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 Flask = "^2.0.1"
-Flask-RESTful = "^0.3.9"
 marshmallow = "^3.13.0"
 flasgger = "^0.9.5"
 Flask-Testing = "^0.8.1"
