@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from webapp.resources.models import db, Books
-from webapp.resources.routes.routes import routes
+from webapp.resources.routes.routes import routes # TODO: mypy ругается на этот импорт, но он работает
 
 
 def create_app():
