@@ -6,21 +6,21 @@
             "type": "python",
             "request": "launch",
             "module": "webapp",
-            //"console": "internalConsole" //TODO: не нашёл саму консоль :)
+            "console": "internalConsole" //TODO: не нашёл саму консоль :)
         },
         {
             "name": "create db",
             "type": "python",
             "request": "launch",
             "program": "create_db.py",
-            //"console": "internalConsole",
+            "console": "internalConsole",
         },
         {
             "name": "initiate db",
             "type": "python",
             "request": "launch",
             "program": "populate_db_initially.py",
-            //"console": "internalConsole"
+            "console": "internalConsole"
         }
     ]
 }
