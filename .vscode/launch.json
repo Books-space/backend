@@ -1,7 +1,4 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -9,21 +6,21 @@
             "type": "python",
             "request": "launch",
             "module": "webapp",
-            "console": "internalConsole"
+            //"console": "internalConsole" //TODO: не нашёл саму консоль :)
         },
         {
             "name": "create db",
             "type": "python",
             "request": "launch",
             "program": "create_db.py",
-            "console": "internalConsole",
+            //"console": "internalConsole",
         },
         {
             "name": "initiate db",
             "type": "python",
             "request": "launch",
             "program": "populate_db_initially.py",
-            "console": "internalConsole"
+            //"console": "internalConsole"
         }
     ]
 }
