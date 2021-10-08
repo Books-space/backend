@@ -6,7 +6,7 @@
             "type": "python",
             "request": "launch",
             "module": "webapp",
-            "console": "internalConsole" //TODO: не нашёл саму консоль :)
+            "console": "internalConsole"
         },
         {
             "name": "create db",
