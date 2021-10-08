@@ -1,3 +1,4 @@
+from typing import Optional
 from flask import Blueprint, request, jsonify, abort, make_response
 from dataclasses import asdict
 from marshmallow import ValidationError
@@ -31,8 +32,13 @@ def book_list():
         """
         This is for obtaining the books list
         """
+        order: Optional[str] = request.args.get("order", type=str, default='asc')
+        title: Optional[str] = request.args.get("title", type=str, default='')
+        author: Optional[str] = request.args.get("author", type=str, default='')
+
+        desc = order == 'desc'
         schema = BookSchema()
-        response = schema.dump(models.load_book_list_from_db(), many=True)
+        response = schema.dump(models.load_book_list_from_db(desc, title, author), many=True)
         return jsonify(books=response)  # TODO: Пришлось добавить jsonify,
         #                                       т.к. ответом не может быть список
 
