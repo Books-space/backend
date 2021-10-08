@@ -7,10 +7,9 @@ from webapp.resources.schemas import BookSchema
 routes = Blueprint('routes', __name__)
 
 
-
 def abort_if_specific_book_doesnt_exist(book_id):
     if not models.check_if_book_with_given_id_exists(book_id):
-        abort(make_response(jsonify(message="Book with id {} doesn\'t exist.".format(book_id)), 400))
+        abort(make_response(jsonify(message=f"Book with id {book_id} doesn\'t exist."), 400))
 
 
 def process_book(model_function):
@@ -34,7 +33,8 @@ def book_list():
         """
         schema = BookSchema()
         response = schema.dump(models.load_book_list_from_db(), many=True)
-        return jsonify(books=response) # TODO: Пришлось добавить jsonify, т.к. ответом не может быть список
+        return jsonify(books=response)  # TODO: Пришлось добавить jsonify,
+        #                                       т.к. ответом не может быть список
 
     if request.method == 'POST':
         """

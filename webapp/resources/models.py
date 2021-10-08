@@ -19,7 +19,7 @@ MOCK_DB_PATH = RESOURCES_PATH / 'mock_db.json'
 
 #  TODO: Спросить у Владимира, правильно ли это называть модели во множественном числе,
 #   знаю точно, что в Django, например, точно принято их называть в единственном:
-class Books(db.Model):
+class Books(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     author = db.Column(db.String(100), nullable=False)
@@ -56,7 +56,8 @@ def add_book(given_book: Book):
     :param given_book:
     :return: book
     """
-    # TODO: Можно ли распаковывать объект в объект (как это происходит со словарём, например, через **?
+    # TODO: Можно ли распаковывать объект в аргументы метода (как это происходит со словарём,
+    # например, через **)?
     new_book = Books(id=given_book.id, title=given_book.title, author=given_book.author)
     db.session.add(new_book)
     db.session.commit()
