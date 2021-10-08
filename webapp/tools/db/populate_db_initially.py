@@ -13,8 +13,9 @@ def populate():
             db.session.add(course)
             db.session.commit()
             print('Book added')
-        except:
-            print('Book adding failed')
+        except Exception as exc:
+            print('Book adding failed:')
+            print(exc)
             db.session.rollback()
 
     print('"Books space" database population is complete.')

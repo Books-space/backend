@@ -12,8 +12,11 @@ flasgger = "^0.9.5"
 Flask-Testing = "^0.8.1"
 Flask-SQLAlchemy = "^2.5.1"
 psycopg2-binary = "^2.9.1"
+sqlalchemy-stubs = "^0.4"
 
 [tool.poetry.dev-dependencies]
+mypy = "^0.910"
+flake8 = "^3.9.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

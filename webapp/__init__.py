@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from webapp.resources.models import db, Books
+from webapp.resources.models import db
 from webapp.resources.routes.routes import routes
 
 

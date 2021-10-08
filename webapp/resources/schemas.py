@@ -3,7 +3,8 @@ from webapp.resources.models import check_if_book_with_given_title_and_author_ex
 
 
 class BookSchema(Schema):
-    # TODO: надо разобраться с тем, как получать id, по идее они должны генерироваться автоматически,
+    # TODO: надо разобраться с тем, как получать id,
+    #   по идее они должны генерироваться автоматически,
     #   как в при добавлении записи в таблицу
     #   id = fields.Int(dump_only=True)
     id = fields.Int(required=True)

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, abort, Response
+from flask import Blueprint, request, jsonify, abort, make_response
 from dataclasses import asdict
 from marshmallow import ValidationError
 from webapp.resources import models
@@ -7,10 +7,10 @@ from webapp.resources.schemas import BookSchema
 routes = Blueprint('routes', __name__)
 
 
-
 def abort_if_specific_book_doesnt_exist(book_id):
     if not models.check_if_book_with_given_id_exists(book_id):
-        abort(404, 'Book with id {} doesn\'t exist.'.format(book_id)) # TODO: Экранировал апостроф, но это почему-то не помогло
+        abort(make_response(jsonify(message=f"Book with id {book_id} doesn\'t exist."), 400))
+
 
 def process_book(model_function):
     data = request.json
@@ -25,7 +25,7 @@ def process_book(model_function):
     return asdict(book), 201
 
 
-@routes.route('', methods=['POST', 'GET']) # TODO: При рефакторинге добавились фласковские декораторы
+@routes.route('', methods=['POST', 'GET'])
 def book_list():
     if request.method == 'GET':
         """
@@ -33,7 +33,8 @@ def book_list():
         """
         schema = BookSchema()
         response = schema.dump(models.load_book_list_from_db(), many=True)
-        return jsonify(books=response) # TODO: Пришлось добавить jsonify, т.к. ответом не может быть список
+        return jsonify(books=response)  # TODO: Пришлось добавить jsonify,
+        #                                       т.к. ответом не может быть список
 
     if request.method == 'POST':
         """
@@ -43,12 +44,11 @@ def book_list():
 
 
 @routes.route('<book_id>', methods=['GET', 'DELETE', 'PUT'])
-def specific_book(book_id: str):
+def specific_book(book_id: int):
     if request.method == "GET":
         """
         This is for obtaining specific Book information
         """
-        book_id = int(book_id)
         abort_if_specific_book_doesnt_exist(book_id)
         response = asdict(models.load_book_from_db_by_id(book_id))
         return response
@@ -57,7 +57,6 @@ def specific_book(book_id: str):
         """
         This is for Book deletion
         """
-        book_id = int(book_id)
         abort_if_specific_book_doesnt_exist(book_id)
         models.delete_book(book_id)
         return '', 204
