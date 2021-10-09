@@ -12,14 +12,14 @@
             "name": "create db",
             "type": "python",
             "request": "launch",
-            "program": "create_db.py",
+            "module": "webapp.tools.db.create_db",
             "console": "internalConsole",
         },
         {
             "name": "initiate db",
             "type": "python",
             "request": "launch",
-            "program": "populate_db_initially.py",
+            "module": "webapp.tools.db.populate_db_initially",
             "console": "internalConsole"
         }
     ]

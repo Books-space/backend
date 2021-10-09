@@ -35,10 +35,26 @@ class Book:
         return '<Book id:{}| "{}" after {}>'.format(self.id, self.title, self.author)
 
 
-def load_book_list_from_db():
+def load_book_list_from_db(order_desc=False, title='', author=''):
     book_list = []
-    # TODO: Надо добавить возможность изменять порядок выдочи (asc / desc)
-    for book_rec in Books.query.order_by(Books.title.desc()).all():
+    # TODO: Пока не нашёл можно ли управлять порядком одним булевым значением,
+    # можно ли это сделать проще чем здесь?
+    books_title_ordered = Books.title
+    books_author_ordered = Books.author
+    books_id_ordered = Books.id
+    if order_desc:
+        books_title_ordered = Books.title.desc()
+        books_author_ordered = Books.author.desc()
+        books_id_ordered = Books.id.desc()
+
+    # TODO: Насчёт динамического составления фильтров тоже не уверен:
+    book_filters = dict()
+    if title != '':
+        book_filters['title'] = title
+    if author != '':
+        book_filters['author'] = author
+
+    for book_rec in Books.query.order_by(books_title_ordered, books_author_ordered, books_id_ordered).filter_by(**book_filters):
         book_list.append(Book(book_rec.id,
                               book_rec.title,
                               book_rec.author))
