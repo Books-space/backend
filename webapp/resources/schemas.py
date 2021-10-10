@@ -1,5 +1,5 @@
-from marshmallow import Schema, fields, ValidationError, validates_schema, post_load
-from webapp.resources.models import check_if_book_with_given_title_and_author_exists, Book
+from marshmallow import Schema, fields, post_load
+from webapp.resources.models import Book
 
 
 class BookSchema(Schema):
@@ -10,14 +10,6 @@ class BookSchema(Schema):
     id = fields.Int(required=True)
     title = fields.Str(required=True)
     author = fields.Str(required=True)
-
-    @validates_schema
-    def validate_title_author_combination(self, data, **kwargs) -> None:
-        title = data['title']
-        author = data['author']
-        if check_if_book_with_given_title_and_author_exists(title, author):
-            raise ValidationError('Book with title "{}" by {} already exists,'
-                                  ' please, use a different combination;'.format(title, author))
 
     @post_load
     def create_book(self, data, **kwargs) -> Book:
