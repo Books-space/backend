@@ -1,9 +1,11 @@
 from webapp import create_app
 from webapp.resources.models import Books, db
 
-MOCK_BOOK_LIST = [{'id': 1, 'title': 'A Byte Of Python', 'author': 'Swaroop C. H.'},
-                  {'id': 2, 'title': 'Грокаем Алгоритмы', 'author': 'Адитья Бхаргава'},
-                  {'id': 3, 'title': 'Карьера Программиста', 'author': 'Г. Лакман Макдауэлл'}]
+MOCK_BOOK_LIST = [
+    {'title': 'A Byte Of Python', 'author': 'Swaroop C. H.'},
+    {'title': 'Грокаем Алгоритмы', 'author': 'Адитья Бхаргава'},
+    {'title': 'Карьера Программиста', 'author': 'Г. Лакман Макдауэлл'},
+]
 
 
 def populate():
