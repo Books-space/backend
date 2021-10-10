@@ -6,19 +6,6 @@ from marshmallow import Schema, fields
 db = SQLAlchemy()
 
 
-class InitBookSchema(Schema):
-    id = fields.Int(dump_only=True)
-    title = fields.Str(required=True)
-    author = fields.Str(required=True)
-
-
-INIT_SCHEMA = InitBookSchema()
-RESOURCES_PATH = Path(__file__).parent
-MOCK_DB_PATH = RESOURCES_PATH / 'mock_db.json'
-
-
-#  TODO: Спросить у Владимира, правильно ли это называть модели во множественном числе,
-#   знаю точно, что в Django, например, точно принято их называть в единственном:
 class Books(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -33,72 +20,3 @@ class Book:
 
     def __repr__(self):
         return '<Book id:{}| "{}" after {}>'.format(self.id, self.title, self.author)
-
-
-def load_book_list_from_db(order_desc=False, title='', author=''):
-    book_list = []
-    # TODO: Пока не нашёл можно ли управлять порядком одним булевым значением,
-    # можно ли это сделать проще чем здесь?
-    books_title_ordered = Books.title
-    books_author_ordered = Books.author
-    books_id_ordered = Books.id
-    if order_desc:
-        books_title_ordered = Books.title.desc()
-        books_author_ordered = Books.author.desc()
-        books_id_ordered = Books.id.desc()
-
-    # TODO: Насчёт динамического составления фильтров тоже не уверен:
-    book_filters = dict()
-    if title != '':
-        book_filters['title'] = title
-    if author != '':
-        book_filters['author'] = author
-
-    for book_rec in Books.query.order_by(books_title_ordered, books_author_ordered, books_id_ordered).filter_by(**book_filters):
-        book_list.append(Book(book_rec.id,
-                              book_rec.title,
-                              book_rec.author))
-    return book_list
-
-
-def load_book_from_db_by_id(book_id):
-    book_needed = Books.query.filter(Books.id == book_id).first()
-    return Book(book_needed.id, book_needed.title, book_needed.author)
-
-
-def add_book(given_book: Book):
-    """
-    Function that adds new book to list of books
-    :param given_book:
-    :return: book
-    """
-    # TODO: Можно ли распаковывать объект в аргументы метода (как это происходит со словарём,
-    # например, через **)?
-    new_book = Books(id=given_book.id, title=given_book.title, author=given_book.author)
-    db.session.add(new_book)
-    db.session.commit()
-
-    return given_book
-
-
-def replace_book(edited_book: Book):
-    book = Books.query.filter_by(id=edited_book.id).first()
-    book.title = edited_book.title
-    book.author = edited_book.author
-    db.session.commit()
-
-    return edited_book
-
-
-def delete_book(book_id):
-    book_to_delete = Books.query.filter(Books.id == book_id).first()
-    db.session.delete(book_to_delete)
-    db.session.commit()
-
-
-def check_if_book_with_given_id_exists(book_id):
-    return Books.query.filter(Books.id == book_id).count() > 0
-
-
-def check_if_book_with_given_title_and_author_exists(book_title, book_author):
-    return Books.query.filter(Books.title == book_title).count() > 0
