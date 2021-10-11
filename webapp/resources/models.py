@@ -1,8 +1,5 @@
-from pathlib import Path
 from dataclasses import dataclass
 from flask_sqlalchemy import SQLAlchemy
-from marshmallow import Schema, fields
-
 db = SQLAlchemy()
 
 
