@@ -30,13 +30,15 @@ def get_by_id(uid: int):
 
 @routes.route('', methods=['GET'])
 def search():
-    order: Optional[str] = request.args.get("order", type=str, default='asc')
-    title: Optional[str] = request.args.get("title", type=str, default='')
-    author: Optional[str] = request.args.get("author", type=str, default='')
-
+    order: Optional[str] = request.args.get('order', type=str, default='asc')
+    title: Optional[str] = request.args.get('title', type=str, default='')
+    author: Optional[str] = request.args.get('author', type=str, default='')
+    search_str: Optional[str] = request.args.get('search', type=str, default='')
     desc = order == 'desc'
-
-    books = repo.search(desc, title, author)
+    if search_str:
+        books = repo.find_any_inclusions(desc, search_str)
+    else:
+        books = repo.search(desc, title, author)
     return jsonify(books)
 
 

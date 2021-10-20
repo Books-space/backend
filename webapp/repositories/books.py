@@ -1,5 +1,5 @@
 from webapp.resources.models import Books, Book, db
-from webapp.tools.db.sql import sqlfilter, sqlorder
+from webapp.tools.db.sql import sqlfilter, sqlorder, field_contains
 
 
 class BooksRepo:
@@ -20,6 +20,20 @@ class BooksRepo:
             Book(book.id, book.title, book.author, book.publisher,
                  book.isbn, book.year, book.cover, book.annotation)
             for book in query
+        ]
+
+    def find_any_inclusions(self, order_desc=False, search_str: str = None):
+        query = Books.query
+        title_query = field_contains(query, Books.title, search_str)
+        author_query = field_contains(query, Books.author, search_str)
+        result_query = title_query.union(author_query)
+        result_query = sqlorder(result_query, Books.author, order_desc)
+        result_query = sqlorder(result_query, Books.title, order_desc)
+
+        return [
+            Book(book.id, book.title, book.author, book.publisher,
+                 book.isbn, book.year, book.cover, book.annotation)
+            for book in result_query
         ]
 
     def add(self, title: str, author: str) -> Book:

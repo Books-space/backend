@@ -1,4 +1,5 @@
 from sqlalchemy import desc
+from typing import Optional
 
 
 def sqlorder(query, column, is_desc: bool):
@@ -16,3 +17,7 @@ def sqlfilter(query, **kwargs):
         query = query.filter_by(**{field: value})
 
     return query
+
+
+def field_contains(query, field, substring: Optional[str]):
+    return query.filter(field.contains(substring))
