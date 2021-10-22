@@ -5,15 +5,14 @@ description = ""
 authors = ["Alexander Lyotov <sippie84@gmail.com>"]
 
 [tool.poetry.dependencies]
+psycopg2-binary = "^2.9.1"
 python = "^3.9"
 Flask = "^2.0.1"
 marshmallow = "^3.13.0"
 flasgger = "^0.9.5"
 Flask-Testing = "^0.8.1"
 Flask-SQLAlchemy = "^2.5.1"
-psycopg2-binary = "^2.9.1"
 sqlalchemy-stubs = "^0.4"
-pgcli = "^3.2.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"
