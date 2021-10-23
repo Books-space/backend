@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, post_load
-from webapp.resources.models import Book
+from resources.models import Book
 
 
 class BookSchema(Schema):

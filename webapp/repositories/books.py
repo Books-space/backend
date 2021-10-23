@@ -1,5 +1,5 @@
-from webapp.resources.models import Books, Book, db
-from webapp.tools.db.sql import sqlfilter, sqlorder, field_contains
+from resources.models import Books, Book, db
+from tools.db.sql import sqlfilter, sqlorder, field_contains
 
 
 class BooksRepo:

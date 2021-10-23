@@ -1,9 +1,9 @@
 from typing import Optional
-from flask import Blueprint, request, jsonify, abort, make_response
+from flask import Blueprint, request, jsonify, abort, make_response, render_template
 from dataclasses import asdict
 from marshmallow import ValidationError
-from webapp.resources.schemas import BookSchema
-from webapp.repositories.books import BooksRepo
+from resources.schemas import BookSchema
+from repositories.books import BooksRepo
 
 routes = Blueprint('routes', __name__)
 
@@ -19,7 +19,23 @@ def validate():
         return exc.messages, 400
 
 
-@routes.route('<uid>', methods=['GET'])
+@routes.route('/')
+def index():
+    order: Optional[str] = request.args.get('order', type=str, default='asc')
+    title: Optional[str] = request.args.get('title', type=str, default='')
+    author: Optional[str] = request.args.get('author', type=str, default='')
+    search_str: Optional[str] = request.args.get('search', type=str, default='')
+    desc = order == 'desc'
+
+    if search_str:
+        books = repo.find_any_inclusions(desc, search_str)
+    else:
+        books = repo.search(desc, title, author)
+
+    return render_template('index.html', books=books)
+
+
+@routes.route('/api/v1/books/<uid>', methods=['GET'])
 def get_by_id(uid: int):
     if not repo.check_by_id(uid):
         abort(make_response(jsonify(message=f"Book with id {uid} doesn\'t exist."), 400))
@@ -28,7 +44,7 @@ def get_by_id(uid: int):
     return response
 
 
-@routes.route('', methods=['GET'])
+@routes.route('/api/v1/books/', methods=['GET'])
 def search():
     order: Optional[str] = request.args.get('order', type=str, default='asc')
     title: Optional[str] = request.args.get('title', type=str, default='')
@@ -42,14 +58,14 @@ def search():
     return jsonify(books)
 
 
-@routes.route('', methods=['POST'])
+@routes.route('/api/v1/books/', methods=['POST'])
 def add():
     book = validate()
     book = repo.add(title=book.title, author=book.author)
     return asdict(book), 201
 
 
-@routes.route('<uid>', methods=['PUT'])
+@routes.route('/api/v1/books/<uid>', methods=['PUT'])
 def update(uid: int):
     if not repo.check_by_id(uid):
         abort(make_response(jsonify(message=f"Book with id {uid} doesn\'t exist."), 400))
@@ -59,7 +75,7 @@ def update(uid: int):
     return asdict(book), 200
 
 
-@routes.route('<uid>', methods=['DELETE'])
+@routes.route('/api/v1/books/<uid>', methods=['DELETE'])
 def delete(uid: int):
     if not repo.check_by_id(uid):
         abort(make_response(jsonify(message=f"Book with id {uid} doesn\'t exist."), 400))
