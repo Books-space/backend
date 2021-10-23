@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.0"
 description = ""
-authors = ["Alexander Lyotov <sippie84@gmail.com>"]
+authors = ["Alexander Lyotov <sippie84@gmail.com>", "Ekaterina Kim <kimkaty303@gmail.com>"]
 
 [tool.poetry.dependencies]
 psycopg2-binary = "^2.9.1"
