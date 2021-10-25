@@ -48,12 +48,17 @@ def populate(books_list):
     print('"Books space" database population is complete.')
 
 
+def populate_db_from_given_csv(csv_path='books.csv'):
+    books_list = read_books_from_csv(csv_path=csv_path)
+    app = create_app()
+    with app.app_context():
+        populate(books_list)
+    logger.info('Population of the db ended.')
+
+
 if __name__ == '__main__':
     logging.basicConfig(
         level=logging.INFO,
         format='%(filename)s | %(levelname)s: %(message)s',  # noqa: WPS323
     )
-    books_list = read_books_from_csv()
-    app = create_app()
-    with app.app_context():
-        populate(books_list)
+    populate_db_from_given_csv()
