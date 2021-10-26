@@ -2,11 +2,12 @@ import csv
 import logging
 from webapp import create_app
 from webapp.resources.models import Books, Book, db
+from webapp.tools.db import config
 
 logger = logging.getLogger(__name__)
 
 
-def read_books_from_csv(csv_path='books.csv'):
+def read_books_from_csv(csv_path=config.default_csv):
     books_list = []
     with open(csv_path, mode='r') as input_file:
         reader = csv.reader(input_file)
@@ -48,7 +49,7 @@ def populate(books_list):
     print('"Books space" database population is complete.')
 
 
-def populate_db_from_given_csv(csv_path='books.csv'):
+def populate_db_from_given_csv(csv_path=config.default_csv):
     books_list = read_books_from_csv(csv_path=csv_path)
     app = create_app()
     with app.app_context():
