@@ -11,9 +11,9 @@ Flask = "^2.0.1"
 marshmallow = "^3.13.0"
 flasgger = "^0.9.5"
 Flask-Testing = "^0.8.1"
-Flask-SQLAlchemy = "^2.5.1"
 sqlalchemy-stubs = "^0.4"
-psycopg2 = "^2.9.1"
+typer = "^0.4.0"
+Flask-SQLAlchemy = "^2.5.1"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"
