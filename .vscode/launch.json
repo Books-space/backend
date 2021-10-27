@@ -13,6 +13,7 @@
             "type": "python",
             "request": "launch",
             "module": "webapp.tools.db.create_db",
+            "args": "create",
             "console": "internalConsole",
         },
         {

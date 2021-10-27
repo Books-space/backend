@@ -7,5 +7,5 @@ def create():
     try:
         db.create_all(app=create_app())
         logger.info('Database and table were created;')
-    except Exception as exc:
-        logger.exception('Because of following exception: %s' % exc)
+    except Exception:
+        logger.exception('The database creation failed.')
