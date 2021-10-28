@@ -2,12 +2,12 @@ import csv
 import logging
 from webapp import create_app
 from webapp.resources.models import Books, Book, db
-from webapp.tools.db import config
+
 
 logger = logging.getLogger(__name__)
 
 
-def read_books_from_csv(csv_path=config.default_csv):
+def read_books_from_csv(csv_path='books.csv'):
     books_list = []
     with open(csv_path, mode='r') as input_file:
         reader = csv.reader(input_file)
@@ -41,15 +41,14 @@ def populate(books_list):
             db.session.add(book_raw)
             db.session.commit()
             logger.info(f'Book added: {i} of {total_books}')
-        except Exception as exc:
-            logger.info('Book adding failed:')
-            logger.exception(exc)
+        except Exception:
+            logger.exception('The bookmarket database population failed. The reason is:')
             db.session.rollback()
 
     print('"Books space" database population is complete.')
 
 
-def populate_db_from_given_csv(csv_path=config.default_csv):
+def populate_db_from_given_csv(csv_path='books.csv'):
     books_list = read_books_from_csv(csv_path=csv_path)
     app = create_app()
     with app.app_context():

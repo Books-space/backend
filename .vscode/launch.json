@@ -12,14 +12,16 @@
             "name": "create db",
             "type": "python",
             "request": "launch",
-            "module": "webapp.tools.db.create_db",
+            "module": "webapp.tools.db",
+            "args": ["create"],
             "console": "internalConsole",
         },
         {
             "name": "initiate db",
             "type": "python",
             "request": "launch",
-            "module": "webapp.tools.db.populate_db_initially",
+            "module": "webapp.tools.db",
+            "args": ["fill"],
             "console": "internalConsole"
         }
     ]
