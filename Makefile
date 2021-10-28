@@ -21,5 +21,8 @@ db.fill:
 db.down:
 	docker-compose down
 
+db.down.volumes:
+	docker-compose down -t1 --volumes
+
 webapp.run:
 	python -m webapp
