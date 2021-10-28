@@ -23,6 +23,13 @@
             "module": "webapp.tools.db",
             "args": ["fill"],
             "console": "internalConsole"
-        }
+        },
+        {
+            "name": "db",
+            "type": "python",
+            "request": "launch",
+            "module": "webapp.tools.db",
+            "console": "internalConsole",
+        },
     ]
 }
