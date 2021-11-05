@@ -14,8 +14,9 @@ def db_is_not_available(e):
 def create_app():
     app = Flask(__name__)
     sentry_sdk.init(
-        dsn="https://3a979e0d2537482faf085872cc1c7e1b@o1060270.ingest.sentry.io/6049872",
-        integrations=[FlaskIntegration()]
+        dsn=os.environ['SENTRY_DSN'],
+        integrations=[FlaskIntegration()],
+        environment=os.environ['SENTRY_ENV']
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URL']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
