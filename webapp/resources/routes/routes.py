@@ -66,3 +66,8 @@ def delete(uid: int):
 
     repo.delete(uid)
     return '', 204
+
+
+@routes.route('centry')
+def trigger_error():
+    division_by_zero = 1 / 0
