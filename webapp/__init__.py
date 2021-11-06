@@ -6,19 +6,20 @@ from sqlalchemy.exc import OperationalError
 from werkzeug.exceptions import NotFound
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+import logging
+
+
+def handle_database_error(e):
+    return jsonify({'message': 'Database is not available now. Please, try again later.'}), e.code
+
+
+def handle_request_error(e):
+    return jsonify({'message': 'The server is unanble to process this request.'}), e.code
 
 
 def handle_error(e):
-    if isinstance(e, OperationalError):
-        msg = 'Database is not available now. Please, try again later.'
-    elif isinstance(e, NotFound):
-        msg = 'The server is unanble to process this request.'
-    else:
-        if hasattr(e, 'name'):
-            msg = e.name
-        else:
-            msg = 'Something went wrong. Please, try again later.'
-    return jsonify(msg), e.code
+    logging.error(e)
+    return jsonify({'message': 'Something went wrong. Try again later, please.'}), 500
 
 
 def create_app():
@@ -30,6 +31,8 @@ def create_app():
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URL']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.register_error_handler(OperationalError, handle_database_error)
+    app.register_error_handler(NotFound, handle_request_error)
     app.register_error_handler(Exception, handle_error)
     db.init_app(app)
     app.register_blueprint(routes, url_prefix='/api/v1/books/')
