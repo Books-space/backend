@@ -1,6 +1,6 @@
 from typing import Optional
 from flask import Blueprint, request, jsonify, abort, make_response
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from marshmallow import ValidationError
 from webapp.resources.schemas import BookSchema
 from webapp.repositories.books import BooksRepo
@@ -19,13 +19,35 @@ def validate():
         return exc.messages, 400
 
 
-@routes.route('<uid>', methods=['GET'])
+@dataclass
+class Author:
+    name: str
+    books_count: int
+
+
+@dataclass
+class BookModel:
+    title: str
+    author: Author
+    likes: int
+
+
+@routes.route('<int:uid>', methods=['GET'])
 def get_by_id(uid: int):
     if not repo.check_by_id(uid):
-        abort(make_response(jsonify(message=f"Book with id {uid} doesn\'t exist."), 400))
+        abort(make_response(jsonify(message=f"Book with id {uid} doesn\'t exist."), 404))
 
-    response = asdict(repo.get_by_id(uid))
-    return response
+    # TODO: author = author_repo.get_by_id(book.author)
+    author = Author(name='Пушкин', books_count=127)
+    # TODO: likes = books_repo.get_likes(uid)
+
+    book_entity = repo.get_by_id(uid)
+    book = BookModel(
+        title=book_entity.title,
+        author=author,
+        likes=3,
+    )
+    return asdict(book)
 
 
 @routes.route('', methods=['GET'])

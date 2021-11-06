@@ -25,3 +25,8 @@ To create db run "create db" from vscode debug;
 To populate it run "initiate db";
 
 To run application run "webapp";
+
+## Contributing
+
+- `make lint`
+- `make test`

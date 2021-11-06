@@ -6,6 +6,9 @@ lint:
 	@flake8 webapp
 	@mypy webapp
 
+test:
+	@pytest
+
 db.upd:
 	docker-compose up -d
 

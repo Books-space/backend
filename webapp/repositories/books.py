@@ -38,8 +38,12 @@ class BooksRepo:
 
     def add(self, title: str, author: str) -> Book:
         new_book = Books(title=title, author=author)
-        db.session.add(new_book)
-        db.session.commit()
+        try:
+            db.session.add(new_book)
+            db.session.commit()
+        except IntegrityError:
+            raise AlreadyExists()
+
         return Book(id=new_book.id, title=new_book.title, author=new_book.author,
                     publisher=new_book.publisher, isbn=new_book.isbn, year=new_book.year,
                     cover=new_book.cover, annotation=new_book.annotation)

@@ -19,6 +19,11 @@ sentry-sdk = {extras = ["flask"], version = "^1.4.3"}
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"
 flake8 = "^3.9.2"
+pytest = "^6.2.5"
+pytest-testdox = ">=1.0,<2"
+pytest-mock = "^3.6.1"
+pytest-cov = "^3.0.0"
+Faker = "^9.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
