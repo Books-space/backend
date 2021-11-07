@@ -11,11 +11,11 @@ def sqlorder(query, column, is_desc: bool):
 
 
 def sqlfilter(query, **kwargs):
-    for field, value in kwargs.items():
-        if not value:
+    for field, field_value in kwargs.items():
+        if not field_value:
             continue
 
-        query = query.filter_by(**{field: value})
+        query = query.filter_by(**{field: field_value})
 
     return query
 

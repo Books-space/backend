@@ -38,8 +38,8 @@ def populate(books_list):
                              year=book.year,
                              isbn=book.isbn,
                              cover=book.cover,
-                             annotation=book.annotation
-                             )
+                             annotation=book.annotation,
+                            )
             db.session.add(book_raw)
             db.session.commit()
             logger.info(f'Book added: {i} of {total_books}')
@@ -47,7 +47,7 @@ def populate(books_list):
             logger.exception('The bookmarket database population failed. The reason is:')
             db.session.rollback()
 
-    print('"Books space" database population is complete.')
+    logger.info('"Books space" database population is complete.')
 
 
 def populate_db_from_given_csv(csv_path='books.csv'):
