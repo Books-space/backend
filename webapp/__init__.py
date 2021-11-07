@@ -1,25 +1,30 @@
+import logging
 import os
+
+import sentry_sdk
 from flask import Flask, jsonify
-from webapp.resources.models import db
-from webapp.resources.routes.routes import routes
+from sentry_sdk.integrations.flask import FlaskIntegration
 from sqlalchemy.exc import OperationalError
 from werkzeug.exceptions import NotFound
-import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
-import logging
+
+from webapp.resources.models import db
+from webapp.resources.routes.routes import routes
 
 
-def handle_database_error(e):
-    return jsonify({'message': 'Database is not available now. Please, try again later.'}), e.code
+def handle_database_error(error):
+    database_error_msg = {'message': 'Database is not available now. Please, try again later.'}
+    return jsonify(database_error_msg), error.code
 
 
-def handle_request_error(e):
-    return jsonify({'message': 'The server is unanble to process this request.'}), e.code
+def handle_request_error(error):
+    request_error_msg = {'message': 'The server is unanble to process this request.'}
+    return jsonify(request_error_msg), error.code
 
 
-def handle_error(e):
-    logging.error(e)
-    return jsonify({'message': 'Something went wrong. Try again later, please.'}), 500
+def handle_error(error):
+    logging.error(error)
+    some_error_msg = {'message': 'Something went wrong. Try again later, please.'}
+    return jsonify(some_error_msg), 500
 
 
 def create_app():

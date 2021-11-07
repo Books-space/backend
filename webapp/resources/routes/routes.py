@@ -1,9 +1,11 @@
-from typing import Optional
-from flask import Blueprint, request, jsonify, abort, make_response
 from dataclasses import asdict
+from typing import Optional
+
+from flask import Blueprint, abort, jsonify, make_response, request
 from marshmallow import ValidationError
-from webapp.resources.schemas import BookSchema
+
 from webapp.repositories.books import BooksRepo
+from webapp.resources.schemas import BookSchema
 
 routes = Blueprint('routes', __name__)
 
@@ -45,7 +47,15 @@ def search():
 @routes.route('', methods=['POST'])
 def add():
     book = validate()
-    book = repo.add(title=book.title, author=book.author)
+    book = repo.add(
+        id=book.id,
+        title=book.title,
+        author=book.author,
+        publisher=book.publisher,
+        isbn=book.isbn,
+        year=book.year,
+        cover=book.cover,
+        annotation=book.annotation)
     return asdict(book), 201
 
 

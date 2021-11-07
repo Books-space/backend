@@ -1,8 +1,8 @@
 import csv
 import logging
-from webapp import create_app
-from webapp.resources.models import Books, Book, db
 
+from webapp import create_app
+from webapp.resources.models import Book, Books, db
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ def read_books_from_csv(csv_path='books.csv'):
     with open(csv_path, mode='r') as input_file:
         reader = csv.reader(input_file)
         _ = next(reader)
-        for i, (_, title, author, publisher, year, isbn, cover, annotation) in enumerate(reader):
+        for i, title, author, publisher, year, isbn, cover, annotation in reader:
             book = Book(id=i,
                         title=title,
                         author=author,
@@ -30,7 +30,9 @@ def populate(books_list):
     total_books = len(books_list)
     for i, book in enumerate(books_list, start=1):
         try:
-            book_raw = Books(title=book.title,
+            book_raw = Books(
+                             id=book.id,
+                             title=book.title,
                              author=book.author,
                              publisher=book.publisher,
                              year=book.year,

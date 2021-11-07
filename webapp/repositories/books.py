@@ -1,5 +1,5 @@
-from webapp.resources.models import Books, Book, db
-from webapp.tools.db.sql import sqlfilter, sqlorder, field_contains
+from webapp.resources.models import Book, Books, db
+from webapp.tools.db.sql import field_contains, sqlfilter, sqlorder
 
 
 class BooksRepo:
@@ -36,8 +36,10 @@ class BooksRepo:
             for book in result_query
         ]
 
-    def add(self, title: str, author: str) -> Book:
-        new_book = Books(title=title, author=author)
+    def add(self, id: int, title: str, author: str,
+            publisher: str, isbn: str, year: int, cover: str, annotation: str) -> Book:
+        new_book = Books(id=id, title=title, author=author, publisher=publisher, isbn=isbn,
+                         year=year, cover=cover, annotation=annotation)
         db.session.add(new_book)
         db.session.commit()
         return Book(id=new_book.id, title=new_book.title, author=new_book.author,

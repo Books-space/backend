@@ -1,4 +1,5 @@
 import typer
+
 from webapp.tools.db import create_db, populate_db_initially
 
 app = typer.Typer()
@@ -12,7 +13,7 @@ def create():
 
 
 @app.command()
-def fill(csv: str = typer.Argument('books.csv')):
+def fill(csv: str = typer.Argument('books.csv')):  # noqa: WPS404
     populate_db_initially.populate_db_from_given_csv(csv_path=csv)
 
 

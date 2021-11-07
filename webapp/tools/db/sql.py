@@ -1,5 +1,6 @@
-from sqlalchemy import desc
 from typing import Optional
+
+from sqlalchemy import desc
 
 
 def sqlorder(query, column, is_desc: bool):

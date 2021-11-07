@@ -4,7 +4,8 @@ db = SQLAlchemy()
 
 
 class Books(db.Model):  # type: ignore
-    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(200), nullable=False)
     author = db.Column(db.String(150), nullable=True)
     publisher = db.Column(db.String(100), nullable=True)
