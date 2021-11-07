@@ -12,6 +12,7 @@ class Books(db.Model):  # type: ignore
     year = db.Column(db.Integer, nullable=False)
     cover = db.Column(db.String(150), nullable=False)
     annotation = db.Column(db.String(1500), nullable=True)
+    db.UniqueConstraint(isbn)
 
 
 @dataclass
