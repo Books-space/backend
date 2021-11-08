@@ -44,8 +44,11 @@ def populate(books_list):
             db.session.add(book_raw)
             db.session.commit()
             logger.info(f'Book added: {book_num} of {total_books}')
-        except Exception:
-            logger.exception('The bookmarket database population failed. The reason is:')
+        except Exception as exc:
+            logger.exception("The book with id %s wasn't added into db. The reason is: \n%s" % (
+                book.id,
+                exc,
+            ))
             db.session.rollback()
 
     logger.info('"Books space" database population is complete.')

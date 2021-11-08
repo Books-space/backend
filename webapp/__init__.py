@@ -4,7 +4,7 @@ import os
 import sentry_sdk
 from flask import Flask, jsonify
 from sentry_sdk.integrations.flask import FlaskIntegration
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import IntegrityError, OperationalError
 from werkzeug.exceptions import NotFound
 
 from webapp.resources.models import db
@@ -19,6 +19,12 @@ def handle_database_error(error):
 def handle_request_error(error):
     request_error_msg = {'message': 'The server is unanble to process this request.'}
     return jsonify(request_error_msg), error.code
+
+
+def handle_unique_constraint_error(error):
+    unique_constraint_error_msg = {'message': 'Book with this isbn already exists in database.'}
+    logging.error(error)
+    return jsonify(unique_constraint_error_msg), error.code
 
 
 def handle_error(error):
@@ -36,6 +42,7 @@ def create_app():
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URL']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.register_error_handler(IntegrityError, handle_unique_constraint_error)
     app.register_error_handler(OperationalError, handle_database_error)
     app.register_error_handler(NotFound, handle_request_error)
     app.register_error_handler(Exception, handle_error)
