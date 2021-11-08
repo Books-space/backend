@@ -11,11 +11,10 @@ class Books(db.Model):  # type: ignore
     title = db.Column(db.String(200), nullable=False)
     author = db.Column(db.String(150), nullable=True)
     publisher = db.Column(db.String(100), nullable=True)
-    isbn = db.Column(db.String(50), nullable=False)
+    isbn = db.Column(db.String(50), nullable=False, unique=True)
     year = db.Column(db.Integer, nullable=False)
     cover = db.Column(db.String(150), nullable=False)
     annotation = db.Column(db.String(1500), nullable=True)
-    db.UniqueConstraint(isbn)  # noqa: WPS604
 
 
 @dataclass
