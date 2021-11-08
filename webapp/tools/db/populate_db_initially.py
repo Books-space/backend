@@ -1,8 +1,8 @@
 import csv
 import logging
-from webapp import create_app
-from webapp.resources.models import Books, Book, db
 
+from webapp import create_app
+from webapp.resources.models import Book, Books, db
 
 logger = logging.getLogger(__name__)
 
@@ -11,41 +11,44 @@ def read_books_from_csv(csv_path='books.csv'):
     books_list = []
     with open(csv_path, mode='r') as input_file:
         reader = csv.reader(input_file)
-        _ = next(reader)
-        for i, (_, title, author, publisher, year, isbn, cover, annotation) in enumerate(reader):
-            book = Book(id=i,
-                        title=title,
-                        author=author,
-                        publisher=publisher,
-                        year=year,
-                        isbn=isbn,
-                        cover=cover,
-                        annotation=annotation
-                        )
+        next(reader)
+        for book_id, title, author, publisher, year, isbn, cover, annotation in reader:
+            book = Book(
+                id=book_id,
+                title=title,
+                author=author,
+                publisher=publisher,
+                year=year,
+                isbn=isbn,
+                cover=cover,
+                annotation=annotation,
+            )
             books_list.append(book)
     return books_list
 
 
 def populate(books_list):
     total_books = len(books_list)
-    for i, book in enumerate(books_list, start=1):
+    for book_num, book in enumerate(books_list, start=1):
         try:
-            book_raw = Books(title=book.title,
-                             author=book.author,
-                             publisher=book.publisher,
-                             year=book.year,
-                             isbn=book.isbn,
-                             cover=book.cover,
-                             annotation=book.annotation
-                             )
+            book_raw = Books(
+                id=book.id,
+                title=book.title,
+                author=book.author,
+                publisher=book.publisher,
+                year=book.year,
+                isbn=book.isbn,
+                cover=book.cover,
+                annotation=book.annotation,
+            )
             db.session.add(book_raw)
             db.session.commit()
-            logger.info(f'Book added: {i} of {total_books}')
+            logger.info(f'Book added: {book_num} of {total_books}')
         except Exception:
             logger.exception('The bookmarket database population failed. The reason is:')
             db.session.rollback()
 
-    print('"Books space" database population is complete.')
+    logger.info('"Books space" database population is complete.')
 
 
 def populate_db_from_given_csv(csv_path='books.csv'):

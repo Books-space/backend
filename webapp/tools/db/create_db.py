@@ -1,5 +1,6 @@
 import logging
-from webapp import db, create_app
+
+from webapp import create_app, db
 
 
 def create():

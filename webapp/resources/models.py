@@ -1,10 +1,13 @@
 from dataclasses import dataclass
+
 from flask_sqlalchemy import SQLAlchemy
+
 db = SQLAlchemy()
 
 
 class Books(db.Model):  # type: ignore
-    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(200), nullable=False)
     author = db.Column(db.String(150), nullable=True)
     publisher = db.Column(db.String(100), nullable=True)
@@ -12,7 +15,7 @@ class Books(db.Model):  # type: ignore
     year = db.Column(db.Integer, nullable=False)
     cover = db.Column(db.String(150), nullable=False)
     annotation = db.Column(db.String(1500), nullable=True)
-    db.UniqueConstraint(isbn)
+    db.UniqueConstraint(isbn)  # noqa: WPS604
 
 
 @dataclass
