@@ -13,7 +13,7 @@ def create():
 
 
 @app.command()
-def fill(csv: str = typer.Argument('books.csv')):  # noqa: WPS404
+def fill(csv: str = typer.Argument('books.csv')):  # noqa: WPS404, B008
     populate_db_initially.populate_db_from_given_csv(csv_path=csv)
 
 

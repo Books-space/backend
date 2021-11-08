@@ -32,7 +32,7 @@ def create_app():
     sentry_sdk.init(
         dsn=os.environ['SENTRY_DSN'],
         integrations=[FlaskIntegration()],
-        environment=os.environ['SENTRY_ENV']
+        environment=os.environ['SENTRY_ENV'],
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URL']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

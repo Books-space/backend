@@ -14,7 +14,7 @@ validator = BookSchema()
 
 
 def validate():
-    data = request.json
+    data = request.json  # noqa: WPS110
     try:
         return validator.load(data)
     except ValidationError as exc:
@@ -26,8 +26,7 @@ def get_by_id(uid: int):
     if not repo.check_by_id(uid):
         abort(make_response(jsonify(message=f"Book with id {uid} doesn\'t exist."), 400))
 
-    response = asdict(repo.get_by_id(uid))
-    return response
+    return asdict(repo.get_by_id(uid))
 
 
 @routes.route('', methods=['GET'])
@@ -55,7 +54,8 @@ def add():
         isbn=book.isbn,
         year=book.year,
         cover=book.cover,
-        annotation=book.annotation)
+        annotation=book.annotation,
+    )
     return asdict(book), 201
 
 
