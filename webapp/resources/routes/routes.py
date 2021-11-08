@@ -1,6 +1,6 @@
 from dataclasses import asdict
 from typing import Optional
-
+import logging
 from flask import Blueprint, abort, jsonify, make_response, request
 from marshmallow import ValidationError
 
@@ -13,8 +13,12 @@ repo = BooksRepo()
 validator = BookSchema()
 
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 def validate():
     data = request.json  # noqa: WPS110
+    logger.info(data)
     try:
         return validator.load(data)
     except ValidationError as exc:
@@ -46,6 +50,8 @@ def search():
 @routes.route('', methods=['POST'])
 def add():
     book = validate()
+    logger.debug('add route: Book after validation:')
+    logger.debug(book)
     book = repo.add(
         id=book.id,
         title=book.title,
